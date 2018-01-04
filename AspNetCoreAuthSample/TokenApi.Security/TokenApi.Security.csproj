@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SecretsRepository.cs" />
+    <Compile Include="SecretsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityKeyFactory.cs" />
   </ItemGroup>

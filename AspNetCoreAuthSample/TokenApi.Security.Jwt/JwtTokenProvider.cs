@@ -8,9 +8,9 @@ using TokenApi.Security.Common;
 
 namespace TokenApi.Security.Jwt
 {
-    public class JwtTokenFactory : IJwtTokenFactory
+    public class JwtTokenProvider : IJwtTokenProvider
     {
-        public async Task<string> CreateTokenAsync(
+        public Task<string> CreateTokenAsync(
             IEnumerable<Claim> claims,
             SecurityKey securityKey,
             string issuer,
@@ -25,7 +25,7 @@ namespace TokenApi.Security.Jwt
                 new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            return tokenString;
+            return Task.FromResult(tokenString);
         }
     }
 }

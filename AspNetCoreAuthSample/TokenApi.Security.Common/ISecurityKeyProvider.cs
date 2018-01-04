@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace TokenApi.Security.Common
 {
-    public interface ISecurityKeyFactory
+    public interface ISecurityKeyProvider
     {
         Task<SecurityKey> CreateSecurityKeyAsync(string secret);
     }

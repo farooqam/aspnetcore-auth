@@ -54,9 +54,10 @@
   <ItemGroup>
     <Compile Include="CreateTokenOptions.cs" />
     <Compile Include="ICredentialValidator.cs" />
+    <Compile Include="ISecurityKeyProvider.cs" />
     <Compile Include="ITokenService.cs" />
-    <Compile Include="ISecretsRepository.cs" />
-    <Compile Include="IJwtTokenFactory.cs" />
+    <Compile Include="ISecretsProvider.cs" />
+    <Compile Include="IJwtTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

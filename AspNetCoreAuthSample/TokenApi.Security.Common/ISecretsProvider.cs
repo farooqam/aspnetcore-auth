@@ -2,7 +2,7 @@
 
 namespace TokenApi.Security.Common
 {
-    public interface ISecretsRepository
+    public interface ISecretsProvider
     {
         Task<string> GetSecretForSymmtericKeyAsync();
     }

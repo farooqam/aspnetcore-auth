@@ -5,12 +5,12 @@ using TokenApi.Security.Common;
 
 namespace TokenApi.Security
 {
-    public class SecurityKeyFactory : ISecurityKeyFactory
+    public class SecurityKeyFactory : ISecurityKeyProvider
     {
-        public async Task<SecurityKey> CreateSecurityKeyAsync(string secret)
+        public Task<SecurityKey> CreateSecurityKeyAsync(string secret)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-            return secretKey;
+            return Task.FromResult((SecurityKey)secretKey);
         }
     }
 }

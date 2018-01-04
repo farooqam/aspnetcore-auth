@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
+﻿using System.Threading.Tasks;
 using TokenApi.Dal.Common;
 using TokenApi.Security.Common;
 
@@ -9,23 +7,23 @@ namespace TokenApi
     public class JwtTokenService : ITokenService
     {
         private readonly ICredentialValidator _credentialValidator;
-        private readonly ISecretsRepository _secretsRepository;
+        private readonly ISecretsProvider _secretsProvider;
         private readonly IUserRepository _userRepository;
-        private readonly IJwtTokenFactory _jwtTokenFactory;
-        private readonly ISecurityKeyFactory _securityKeyFactory;
+        private readonly IJwtTokenProvider _jwtTokenProvider;
+        private readonly ISecurityKeyProvider _securityKeyProvider;
 
         public JwtTokenService(
             ICredentialValidator credentialValidator,
-            ISecretsRepository secretsRepository,
+            ISecretsProvider secretsProvider,
             IUserRepository userRepository,
-            IJwtTokenFactory jwtTokenFactory,
-            ISecurityKeyFactory securityKeyFactory)
+            IJwtTokenProvider jwtTokenProvider,
+            ISecurityKeyProvider securityKeyProvider)
         {
             _credentialValidator = credentialValidator;
-            _secretsRepository = secretsRepository;
+            _secretsProvider = secretsProvider;
             _userRepository = userRepository;
-            _jwtTokenFactory = jwtTokenFactory;
-            _securityKeyFactory = securityKeyFactory;
+            _jwtTokenProvider = jwtTokenProvider;
+            _securityKeyProvider = securityKeyProvider;
         }
 
         public async Task<string> CreateTokenAsync(CreateTokenOptions options)
@@ -37,10 +35,10 @@ namespace TokenApi
                 return null;
             }
 
-            var serverSecret = await _secretsRepository.GetSecretForSymmtericKeyAsync();
-            var secretKey = await _securityKeyFactory.CreateSecurityKeyAsync(serverSecret);
+            var serverSecret = await _secretsProvider.GetSecretForSymmtericKeyAsync();
+            var secretKey = await _securityKeyProvider.CreateSecurityKeyAsync(serverSecret);
             var claims = await _userRepository.GetUserClaimsAsync(options.Username);
-            var token = await _jwtTokenFactory.CreateTokenAsync(claims, secretKey, options.Issuer, options.Audience);
+            var token = await _jwtTokenProvider.CreateTokenAsync(claims, secretKey, options.Issuer, options.Audience);
 
             return token;
         }

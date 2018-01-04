@@ -5,9 +5,9 @@ namespace TokenApi.Security.ActiveDirectory
 {
     public class ActiveDirectoryCredentialValidator : ICredentialValidator
     {
-        public async Task<bool> ValidateAsync(string username, string password)
+        public Task<bool> ValidateAsync(string username, string password)
         {
-            return true;
+            return Task.FromResult(true);
         }
     }
 }
