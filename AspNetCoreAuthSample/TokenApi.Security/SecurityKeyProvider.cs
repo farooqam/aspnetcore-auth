@@ -5,7 +5,7 @@ using TokenApi.Security.Common;
 
 namespace TokenApi.Security
 {
-    public class SecurityKeyFactory : ISecurityKeyProvider
+    public class SecurityKeyProvider : ISecurityKeyProvider
     {
         public Task<SecurityKey> CreateSecurityKeyAsync(string secret)
         {

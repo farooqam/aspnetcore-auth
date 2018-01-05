@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.Security.ActiveDir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.Security", "TokenApi.Security\TokenApi.Security.csproj", "{A66A6512-678B-4619-AB37-E8A41DC7FB87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.Security.Jwt.UnitTests", "TokenApi.Security.Jwt.UnitTests\TokenApi.Security.Jwt.UnitTests.csproj", "{91F739E9-A2DC-4519-AC18-204EFD0DD3A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Token.Api.Security.UnitTests", "Token.Api.Security.UnitTests\Token.Api.Security.UnitTests.csproj", "{F4D9FC3D-6AD5-4BFD-AD2E-1F38144B38EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.IntegrationTests", "TokenApi.IntegrationTests\TokenApi.IntegrationTests.csproj", "{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +57,18 @@ Global
 		{A66A6512-678B-4619-AB37-E8A41DC7FB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A66A6512-678B-4619-AB37-E8A41DC7FB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A66A6512-678B-4619-AB37-E8A41DC7FB87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91F739E9-A2DC-4519-AC18-204EFD0DD3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91F739E9-A2DC-4519-AC18-204EFD0DD3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91F739E9-A2DC-4519-AC18-204EFD0DD3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91F739E9-A2DC-4519-AC18-204EFD0DD3A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D9FC3D-6AD5-4BFD-AD2E-1F38144B38EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D9FC3D-6AD5-4BFD-AD2E-1F38144B38EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D9FC3D-6AD5-4BFD-AD2E-1F38144B38EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D9FC3D-6AD5-4BFD-AD2E-1F38144B38EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
