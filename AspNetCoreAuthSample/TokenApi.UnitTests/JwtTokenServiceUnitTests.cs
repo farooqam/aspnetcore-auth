@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
-using TokenApi.Dal.Common;
 using TokenApi.Security.Common;
 using Xunit;
 
@@ -26,7 +25,7 @@ namespace TokenApi.UnitTests
 
             var mockCredentialValidator = new Mock<ICredentialValidator>();
             var mockSecretsProvider = new Mock<ISecretsProvider>();
-            var mockUserRepository = new Mock<IUserRepository>();
+            var mockUserRepository = new Mock<IClaimsProvider>();
             var mockJwtTokenProvider = new Mock<IJwtTokenProvider>();
             var mockSecurityKeyProvider = new Mock<ISecurityKeyProvider>();
 
@@ -65,7 +64,7 @@ namespace TokenApi.UnitTests
 
             var mockCredentialValidator = new Mock<ICredentialValidator>();
             var mockSecretsProvider = new Mock<ISecretsProvider>();
-            var mockUserRepository = new Mock<IUserRepository>();
+            var mockUserRepository = new Mock<IClaimsProvider>();
             var mockJwtTokenProvider = new Mock<IJwtTokenProvider>();
             var mockSecurityKeyProvider = new Mock<ISecurityKeyProvider>();
 

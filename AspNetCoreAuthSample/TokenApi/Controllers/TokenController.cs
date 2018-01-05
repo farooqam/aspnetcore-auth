@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using TokenApi.Common;
-using TokenApi.Dal.Common;
 using TokenApi.Security.Common;
 
 namespace TokenApi.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class TokenController : Controller
     {
@@ -29,7 +24,7 @@ namespace TokenApi.Controllers
         {
             var createTokenOptions = _mapper.Map<CreateTokenOptions>(request);
             var token = await _tokenService.CreateTokenAsync(createTokenOptions);
-            return new OkObjectResult(token);
+            return new OkObjectResult(new PostTokenResponseModel {Token = token});
         }
     }
 }

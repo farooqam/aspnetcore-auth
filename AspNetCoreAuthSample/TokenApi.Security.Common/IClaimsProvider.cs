@@ -2,9 +2,9 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace TokenApi.Dal.Common
+namespace TokenApi.Security.Common
 {
-    public interface IUserRepository
+    public interface IClaimsProvider
     {
         Task<IEnumerable<Claim>> GetUserClaimsAsync(string username);
     }

@@ -4,6 +4,6 @@ namespace TokenApi.Security.Common
 {
     public interface ISecretsProvider
     {
-        Task<string> GetSecretForSymmtericKeyAsync();
+        Task<string> GetSecretAsync();
     }
 }

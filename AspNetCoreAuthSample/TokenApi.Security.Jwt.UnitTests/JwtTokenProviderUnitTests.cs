@@ -21,7 +21,7 @@ namespace TokenApi.Security.Jwt.UnitTests
         }
 
         [Fact]
-        public async Task CreateTokenAsync_When_Key_Too_Short_Throws_Exception()
+        public Task CreateTokenAsync_When_Key_Too_Short_Throws_Exception()
         {
             var minLength = 16;
             var tooShortKey = new String('a', minLength - 1);
@@ -32,6 +32,7 @@ namespace TokenApi.Security.Jwt.UnitTests
 
             createToken.ShouldThrow<ArgumentOutOfRangeException>();
 
+            return Task.FromResult(0);
         }
     }
 }

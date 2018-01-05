@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using TokenApi.Dal.Common;
 using TokenApi.Security.Common;
 
 namespace TokenApi
@@ -8,20 +7,20 @@ namespace TokenApi
     {
         private readonly ICredentialValidator _credentialValidator;
         private readonly ISecretsProvider _secretsProvider;
-        private readonly IUserRepository _userRepository;
+        private readonly IClaimsProvider _claimsProvider;
         private readonly IJwtTokenProvider _jwtTokenProvider;
         private readonly ISecurityKeyProvider _securityKeyProvider;
 
         public JwtTokenService(
             ICredentialValidator credentialValidator,
             ISecretsProvider secretsProvider,
-            IUserRepository userRepository,
+            IClaimsProvider claimsProvider,
             IJwtTokenProvider jwtTokenProvider,
             ISecurityKeyProvider securityKeyProvider)
         {
             _credentialValidator = credentialValidator;
             _secretsProvider = secretsProvider;
-            _userRepository = userRepository;
+            _claimsProvider = claimsProvider;
             _jwtTokenProvider = jwtTokenProvider;
             _securityKeyProvider = securityKeyProvider;
         }
@@ -35,9 +34,9 @@ namespace TokenApi
                 return null;
             }
 
-            var serverSecret = await _secretsProvider.GetSecretForSymmtericKeyAsync();
+            var serverSecret = await _secretsProvider.GetSecretAsync();
             var secretKey = await _securityKeyProvider.CreateSecurityKeyAsync(serverSecret);
-            var claims = await _userRepository.GetUserClaimsAsync(options.Username);
+            var claims = await _claimsProvider.GetUserClaimsAsync(options.Username);
             var token = await _jwtTokenProvider.CreateTokenAsync(claims, secretKey, options.Issuer, options.Audience);
 
             return token;

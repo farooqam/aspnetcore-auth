@@ -5,7 +5,7 @@ namespace TokenApi.Security
 {
     public class SecretsProvider : ISecretsProvider
     {
-        public Task<string> GetSecretForSymmtericKeyAsync()
+        public Task<string> GetSecretAsync()
         {
             return Task.FromResult("This is the secret key");
         }
