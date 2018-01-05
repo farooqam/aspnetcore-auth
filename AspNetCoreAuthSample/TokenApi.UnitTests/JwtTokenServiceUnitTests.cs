@@ -8,9 +8,9 @@ using TokenApi.Dal.Common;
 using TokenApi.Security.Common;
 using Xunit;
 
-namespace TokenApi.IntegrationTests
+namespace TokenApi.UnitTests
 {
-    public class JwtTokenServiceIntegrationTests
+    public class JwtTokenServiceUnitTests
     {
         [Fact]
         public async Task CreateTokenAsync_Creates_Token()

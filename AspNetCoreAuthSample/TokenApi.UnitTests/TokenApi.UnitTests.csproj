@@ -9,8 +9,8 @@
     <ProjectGuid>{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TokenApi.IntegrationTests</RootNamespace>
-    <AssemblyName>TokenApi.IntegrationTests</AssemblyName>
+    <RootNamespace>TokenApi.UnitTests</RootNamespace>
+    <AssemblyName>TokenApi.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -81,7 +81,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JwtTokenServiceIntegrationTests.cs" />
+    <Compile Include="JwtTokenServiceUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
