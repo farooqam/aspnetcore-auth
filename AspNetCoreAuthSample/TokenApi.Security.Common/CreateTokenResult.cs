@@ -1,6 +1,6 @@
-﻿namespace TokenApi.Common
+﻿namespace TokenApi.Security.Common
 {
-    public class PostTokenResponseModel
+    public class CreateTokenResult
     {
         public string Token { get; set; }
         public string Issuer { get; set; }

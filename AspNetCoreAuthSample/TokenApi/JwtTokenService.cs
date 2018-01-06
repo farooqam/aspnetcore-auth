@@ -10,22 +10,25 @@ namespace TokenApi
         private readonly IClaimsProvider _claimsProvider;
         private readonly IJwtTokenProvider _jwtTokenProvider;
         private readonly ISecurityKeyProvider _securityKeyProvider;
+        private readonly TokenServiceSettings _tokenServiceSettings;
 
         public JwtTokenService(
             ICredentialValidator credentialValidator,
             ISecretsProvider secretsProvider,
             IClaimsProvider claimsProvider,
             IJwtTokenProvider jwtTokenProvider,
-            ISecurityKeyProvider securityKeyProvider)
+            ISecurityKeyProvider securityKeyProvider,
+            TokenServiceSettings tokenServiceSettings)
         {
             _credentialValidator = credentialValidator;
             _secretsProvider = secretsProvider;
             _claimsProvider = claimsProvider;
             _jwtTokenProvider = jwtTokenProvider;
             _securityKeyProvider = securityKeyProvider;
+            _tokenServiceSettings = tokenServiceSettings;
         }
 
-        public async Task<string> CreateTokenAsync(CreateTokenOptions options)
+        public async Task<CreateTokenResult> CreateTokenAsync(CreateTokenOptions options)
         {
             var credentialsAreValid = await _credentialValidator.ValidateAsync(options.Username, options.Password);
 
@@ -37,9 +40,9 @@ namespace TokenApi
             var serverSecret = await _secretsProvider.GetSecretAsync();
             var secretKey = await _securityKeyProvider.CreateSecurityKeyAsync(serverSecret);
             var claims = await _claimsProvider.GetUserClaimsAsync(options.Username);
-            var token = await _jwtTokenProvider.CreateTokenAsync(claims, secretKey, options.Issuer, options.Audience);
+            var createTokenResult = await _jwtTokenProvider.CreateTokenAsync(claims, secretKey, _tokenServiceSettings.Issuer, options.Audience);
 
-            return token;
+            return createTokenResult;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -35,6 +36,9 @@ namespace TokenApi.IntegrationTests
             var responseModel = JsonConvert.DeserializeObject<PostTokenResponseModel>(content);
             responseModel.Token.Should().NotBeNullOrEmpty();
             responseModel.Issuer.Should().Be("http://www.techniqly.com/token/v1");
+
+            DateTimeOffset.FromUnixTimeSeconds(responseModel.ValidFrom).LocalDateTime.Should().BeBefore(DateTime.Now);
+            DateTimeOffset.FromUnixTimeSeconds(responseModel.ValidTo).LocalDateTime.Should().BeAfter(DateTime.Now).And.BeBefore(DateTime.Now.AddDays(30));
         }
 
         [Fact]

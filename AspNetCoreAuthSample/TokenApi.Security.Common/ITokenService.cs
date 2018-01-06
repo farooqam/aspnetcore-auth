@@ -4,6 +4,6 @@ namespace TokenApi.Security.Common
 {
     public interface ITokenService
     {
-        Task<string> CreateTokenAsync(CreateTokenOptions options);
+        Task<CreateTokenResult> CreateTokenAsync(CreateTokenOptions options);
     }
 }

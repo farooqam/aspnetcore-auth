@@ -7,6 +7,6 @@ namespace TokenApi.Security.Common
 {
     public interface IJwtTokenProvider
     {
-        Task<string> CreateTokenAsync(IEnumerable<Claim> claims, SecurityKey securityKey, string issuer, string audience);
+        Task<CreateTokenResult> CreateTokenAsync(IEnumerable<Claim> claims, SecurityKey securityKey, string issuer, string audience);
     }
 }

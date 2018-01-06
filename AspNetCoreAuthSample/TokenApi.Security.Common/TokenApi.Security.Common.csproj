@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateTokenOptions.cs" />
+    <Compile Include="CreateTokenResult.cs" />
     <Compile Include="IClaimsProvider.cs" />
     <Compile Include="ICredentialValidator.cs" />
     <Compile Include="ISecurityKeyProvider.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="ISecretsProvider.cs" />
     <Compile Include="IJwtTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TokenServiceSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

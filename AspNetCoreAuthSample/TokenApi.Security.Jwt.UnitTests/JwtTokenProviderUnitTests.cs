@@ -15,9 +15,9 @@ namespace TokenApi.Security.Jwt.UnitTests
             var provider = new JwtTokenProvider();
             var secret = "1234567812345678";
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-            var token = await provider.CreateTokenAsync(null, secretKey, null, null);
+            var createTokenResult = await provider.CreateTokenAsync(null, secretKey, null, null);
 
-            token.Should().NotBeNullOrWhiteSpace();
+            createTokenResult.Token.Should().NotBeNullOrWhiteSpace();
         }
 
         [Fact]

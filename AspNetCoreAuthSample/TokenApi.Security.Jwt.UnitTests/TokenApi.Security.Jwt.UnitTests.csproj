@@ -82,6 +82,10 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TokenApi.Security.Common\TokenApi.Security.Common.csproj">
+      <Project>{9ad1c906-2831-49a7-90b6-70280e9376e8}</Project>
+      <Name>TokenApi.Security.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TokenApi.Security.Jwt\TokenApi.Security.Jwt.csproj">
       <Project>{F28F37EE-9C69-415E-B6BC-A3B0D88F8363}</Project>
       <Name>TokenApi.Security.Jwt</Name>

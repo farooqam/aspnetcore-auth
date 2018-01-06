@@ -18,10 +18,11 @@ namespace TokenApi.UnitTests
             var createTokenOptions = new CreateTokenOptions
             {
                 Audience = "aud",
-                Issuer = "iss",
                 Username = "usr",
                 Password = "pwd"
             };
+
+            var tokenServiceSettings = new TokenServiceSettings {Issuer = "issuer"};
 
             var mockCredentialValidator = new Mock<ICredentialValidator>();
             var mockSecretsProvider = new Mock<ISecretsProvider>();
@@ -38,7 +39,8 @@ namespace TokenApi.UnitTests
                 mockSecretsProvider.Object,
                 mockUserRepository.Object,
                 mockJwtTokenProvider.Object,
-                mockSecurityKeyProvider.Object);
+                mockSecurityKeyProvider.Object,
+                tokenServiceSettings);
 
 
             // Act
@@ -47,7 +49,7 @@ namespace TokenApi.UnitTests
             // Assert
             mockJwtTokenProvider.Verify(
                 m => m.CreateTokenAsync(It.IsAny<IEnumerable<Claim>>(), It.IsAny<SecurityKey>(),
-                    createTokenOptions.Issuer, createTokenOptions.Audience), Times.Exactly(1));
+                    tokenServiceSettings.Issuer, createTokenOptions.Audience), Times.Exactly(1));
         }
 
         [Fact]
@@ -57,10 +59,11 @@ namespace TokenApi.UnitTests
             var createTokenOptions = new CreateTokenOptions
             {
                 Audience = "aud",
-                Issuer = "iss",
                 Username = "usr",
                 Password = "pwd"
             };
+
+            var tokenServiceSettings = new TokenServiceSettings {Issuer = "issuer"};
 
             var mockCredentialValidator = new Mock<ICredentialValidator>();
             var mockSecretsProvider = new Mock<ISecretsProvider>();
@@ -77,14 +80,15 @@ namespace TokenApi.UnitTests
                 mockSecretsProvider.Object,
                 mockUserRepository.Object,
                 mockJwtTokenProvider.Object,
-                mockSecurityKeyProvider.Object);
+                mockSecurityKeyProvider.Object,
+                tokenServiceSettings);
 
 
             // Act
-            var token = await service.CreateTokenAsync(createTokenOptions);
+            var createTokenResult = await service.CreateTokenAsync(createTokenOptions);
 
             // Assert
-            token.Should().BeNullOrEmpty();
+            createTokenResult.Should().BeNull();
         }
     }
 }

@@ -33,12 +33,15 @@ namespace TokenApi
             services.TryAddScoped<IJwtTokenProvider, JwtTokenProvider>();
             services.TryAddScoped<ISecurityKeyProvider, SecurityKeyProvider>();
             services.TryAddScoped<ITokenService, JwtTokenService>();
+
+            services.TryAddSingleton(provider => new TokenServiceSettings {Issuer = "http://www.techniqly.com/token/v1" });
             
             services.TryAddSingleton(provider =>
             {
                 return new MapperConfiguration(ex =>
                 {
                     ex.CreateMap<PostTokenRequestModel, CreateTokenOptions>();
+                    ex.CreateMap<CreateTokenResult, PostTokenResponseModel>();
                 }).CreateMapper();
             });
 

@@ -43,14 +43,15 @@ namespace TokenApi.Controllers
         public async Task<IActionResult> Post([FromBody] PostTokenRequestModel request)
         {
             var createTokenOptions = _mapper.Map<CreateTokenOptions>(request);
-            var token = await _tokenService.CreateTokenAsync(createTokenOptions);
+            var createTokenResult = await _tokenService.CreateTokenAsync(createTokenOptions);
 
-            if (token == null)
+            if (createTokenResult == null)
             {
                 return BadRequest(new ApiErrors { Errors = new[] { ApiError.CreateTokenAuthFailure(request)}});
             }
 
-            return new OkObjectResult(new PostTokenResponseModel {Token = token, Issuer = "http://www.techniqly.com/token/v1"});
+            var responseModel = _mapper.Map<PostTokenResponseModel>(createTokenResult);
+            return new OkObjectResult(responseModel);
         }
     }
 }

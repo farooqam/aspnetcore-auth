@@ -10,7 +10,7 @@ namespace TokenApi.Security.Jwt
 {
     public class JwtTokenProvider : IJwtTokenProvider
     {
-        public Task<string> CreateTokenAsync(
+        public Task<CreateTokenResult> CreateTokenAsync(
             IEnumerable<Claim> claims,
             SecurityKey securityKey,
             string issuer,
@@ -23,9 +23,15 @@ namespace TokenApi.Security.Jwt
                 DateTime.Now,
                 DateTime.Now.AddDays(30),
                 new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            return Task.FromResult(tokenString);
+            
+            return Task.FromResult(new CreateTokenResult
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Issuer = issuer,
+                ValidTo = new DateTimeOffset(token.ValidTo).ToUnixTimeSeconds(),
+                ValidFrom = new DateTimeOffset(token.ValidFrom).ToUnixTimeSeconds()
+            }
+        );
         }
     }
 }
