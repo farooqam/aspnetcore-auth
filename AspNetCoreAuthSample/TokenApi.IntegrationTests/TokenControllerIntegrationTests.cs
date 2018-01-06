@@ -1,8 +1,10 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TokenApi.Common;
 using Xunit;
 
@@ -20,7 +22,6 @@ namespace TokenApi.IntegrationTests
             {
                 Username = "farooq",
                 Audience = "integration test",
-                Issuer = "integration test library",
                 Password = "hello!"
             };
 
@@ -33,6 +34,7 @@ namespace TokenApi.IntegrationTests
             var content = await response.Content.ReadAsStringAsync();
             var responseModel = JsonConvert.DeserializeObject<PostTokenResponseModel>(content);
             responseModel.Token.Should().NotBeNullOrEmpty();
+            responseModel.Issuer.Should().Be("http://www.techniqly.com/token/v1");
         }
 
         [Fact]
@@ -45,7 +47,6 @@ namespace TokenApi.IntegrationTests
             {
                 Username = "farooq",
                 Audience = "integration test",
-                Issuer = "integration test library",
                 Password = "hello!"
             };
 
@@ -54,6 +55,21 @@ namespace TokenApi.IntegrationTests
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var errorResponseModel = JsonConvert.DeserializeObject<ApiErrors>(content);
+            errorResponseModel.ErrorCount.Should().Be(1);
+
+            var errorModel = errorResponseModel.Errors.Single();
+            errorModel.Message.Should().Be("Could not create token. The username, password, and audience could not be verified.");
+            errorModel.Code.Should().Be(2000);
+
+            var errorResponseModelData = ((JObject)errorModel.Data).ToObject<PostTokenRequestModel>();
+            errorResponseModelData.Audience.Should().Be(requestModel.Audience);
+            errorResponseModelData.Username.Should().Be(requestModel.Username);
+            errorResponseModelData.Password.Should().Be(requestModel.Password);
+
+
         }
     }
 }

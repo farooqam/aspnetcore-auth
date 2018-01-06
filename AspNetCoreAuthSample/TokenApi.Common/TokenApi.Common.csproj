@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiError.cs" />
+    <Compile Include="ApiErrors.cs" />
     <Compile Include="PostTokenRequestModel.cs" />
     <Compile Include="PostTokenResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

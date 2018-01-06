@@ -19,12 +19,38 @@ namespace TokenApi.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Returns a token for the given username, password, and audience.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /token
+        ///     {
+        ///         "username":"farooq",
+        ///         "password":"HelloWorld123!!",
+        ///         "audience":"My mobile app"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <param name="request"></param>
+        /// <returns>The token and issuer name.</returns>
+        /// <response code="200">Returns the token and issuer name.</response>
+        /// <response code="400">If the username, password, and audience could not be verified.</response>      
         [HttpPost]
+        [ProducesResponseType(200, Type = typeof(PostTokenResponseModel))]
+        [ProducesResponseType(400, Type = typeof(ApiErrors))]
         public async Task<IActionResult> Post([FromBody] PostTokenRequestModel request)
         {
             var createTokenOptions = _mapper.Map<CreateTokenOptions>(request);
             var token = await _tokenService.CreateTokenAsync(createTokenOptions);
-            return new OkObjectResult(new PostTokenResponseModel {Token = token});
+
+            if (token == null)
+            {
+                return BadRequest(new ApiErrors { Errors = new[] { ApiError.CreateTokenAuthFailure(request)}});
+            }
+
+            return new OkObjectResult(new PostTokenResponseModel {Token = token, Issuer = "http://www.techniqly.com/token/v1"});
         }
     }
 }
