@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Token.Api.Security.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.UnitTests", "TokenApi.UnitTests\TokenApi.UnitTests.csproj", "{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.IntegrationTests", "TokenApi.IntegrationTests\TokenApi.IntegrationTests.csproj", "{67951037-64F2-4758-979D-1A6F299BA5B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A2AC476-0BF8-40B1-81EB-534C5D2252D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67951037-64F2-4758-979D-1A6F299BA5B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67951037-64F2-4758-979D-1A6F299BA5B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67951037-64F2-4758-979D-1A6F299BA5B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67951037-64F2-4758-979D-1A6F299BA5B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
