@@ -69,6 +69,7 @@
     <Build Include="RaiseError.sql" />
     <Build Include="AuditEvent.sql" />
     <Build Include="AddUserCredential.sql" />
+    <Build Include="AddApplication.sql" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
