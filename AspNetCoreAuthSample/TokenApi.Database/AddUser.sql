@@ -9,14 +9,10 @@ AS
 		BEGIN TRANSACTION
 			INSERT INTO [dbo].[Users] (Username) VALUES (@username);
 
-			INSERT INTO [dbo].AuditEvents (
-				[EventName],
-				[EventDescription],
-				[UserId])
-			VALUES (
-				@eventName,
-				'A user was added.',
-				@executedByUserId);
+			EXEC [dbo].[AuditEvent] 
+				@eventName = @eventName,
+				@eventDescription = 'A user was added.',
+				@executedByUserId = @executedByUserId;
 
 		COMMIT TRANSACTION;
 	END TRY
@@ -24,23 +20,12 @@ AS
 		IF (XACT_STATE()) <> 0
 		BEGIN	
 			ROLLBACK TRANSACTION;
+
+			EXEC [dbo].[AuditEvent] 
+				@eventName = @eventName,
+				@eventDescription = 'A user was attempted to be added but failed.',
+				@executedByUserId = @executedByUserId;
 			
-			DECLARE @errorMessageOutput NVARCHAR(4000);
-
-			EXEC [dbo].[FormatError] @errorMessage = @errorMessageOutput OUTPUT;
-
-			INSERT INTO [dbo].AuditEvents (
-				[EventName],
-				[EventDescription],
-				[EventData],
-				[UserId])
-			VALUES (
-				@eventName,
-				'A user was attempted to be added but failed.',
-				@errorMessageOutput,
-				@executedByUserId);
-
-			EXEC [dbo].[RaiseError] @errorMessage = @errorMessageOutput;
 		END;
 	END CATCH;
 RETURN 0
