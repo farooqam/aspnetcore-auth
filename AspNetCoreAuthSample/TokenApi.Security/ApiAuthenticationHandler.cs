@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -54,23 +51,15 @@ namespace TokenApi.Security
 
             var registeredApplication = await _userRepository.GetRegisteredApplicationAsync(credentials.Username, credentials.Audience);
             
-            if (registeredApplication == null)
-            {
-                return AuthenticateResult.Fail("Authentication failed.");
-            }
-
-            var identity = CreateIdentity(credentials);
-            var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), null, SchemeName);
-
-            return AuthenticateResult.Success(ticket);
+            return registeredApplication == null ? AuthenticateResult.Fail("Authentication failed.") : AuthenticateResult.Success(CreateTicket(credentials));
         }
 
-        private static ClaimsIdentity CreateIdentity(dynamic credentials)
+        private static AuthenticationTicket CreateTicket(dynamic credentials)
         {
             var identity = new ClaimsIdentity(SchemeName);
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.UniqueName, credentials.Username));
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, credentials.Audience));
-            return identity;
+            return new AuthenticationTicket(new ClaimsPrincipal(identity), null, SchemeName);
         }
 
         private async Task<dynamic> GetCredentialsFromBody()

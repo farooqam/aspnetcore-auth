@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.Validation", "Toke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.Dal.Common", "TokenApi.Dal.Common\TokenApi.Dal.Common.csproj", "{4017899B-7550-4F90-B209-B2E21BE21DE3}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TokenApi.Database", "TokenApi.Database\TokenApi.Database.sqlproj", "{B0652395-F698-4573-A599-12709BF28595}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,12 @@ Global
 		{4017899B-7550-4F90-B209-B2E21BE21DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4017899B-7550-4F90-B209-B2E21BE21DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4017899B-7550-4F90-B209-B2E21BE21DE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0652395-F698-4573-A599-12709BF28595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0652395-F698-4573-A599-12709BF28595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0652395-F698-4573-A599-12709BF28595}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B0652395-F698-4573-A599-12709BF28595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0652395-F698-4573-A599-12709BF28595}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0652395-F698-4573-A599-12709BF28595}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
