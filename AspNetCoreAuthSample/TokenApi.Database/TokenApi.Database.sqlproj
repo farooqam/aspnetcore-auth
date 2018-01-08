@@ -62,5 +62,8 @@
     <Build Include="Users.sql" />
     <Build Include="UserCredentials.sql" />
     <Build Include="RegisteredApplications.sql" />
+    <Build Include="Secrets.sql" />
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
 </Project>
