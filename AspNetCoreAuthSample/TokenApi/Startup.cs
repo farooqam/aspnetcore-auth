@@ -40,7 +40,6 @@ namespace TokenApi
             {
                 return new MapperConfiguration(ex =>
                 {
-                    ex.CreateMap<PostTokenRequestModel, CreateTokenOptions>();
                     ex.CreateMap<CreateTokenResult, PostTokenResponseModel>();
                 }).CreateMapper();
             });
