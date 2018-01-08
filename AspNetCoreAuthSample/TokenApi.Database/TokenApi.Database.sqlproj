@@ -65,6 +65,8 @@
     <Build Include="Secrets.sql" />
     <Build Include="AuditEvents.sql" />
     <Build Include="AddUser.sql" />
+    <Build Include="FormatError.sql" />
+    <Build Include="RaiseError.sql" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

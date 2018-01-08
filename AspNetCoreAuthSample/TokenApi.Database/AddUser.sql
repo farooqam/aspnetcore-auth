@@ -24,29 +24,10 @@ AS
 		IF (XACT_STATE()) <> 0
 		BEGIN	
 			ROLLBACK TRANSACTION;
+			
+			DECLARE @errorMessageOutput NVARCHAR(4000);
 
-			DECLARE 
-				@errorMessage    NVARCHAR(4000),
-				@errorNumber     INT,
-				@errorSeverity   INT,
-				@errorState      INT,
-				@errorLine       INT,
-				@errorProcedure  NVARCHAR(200);
-
-			 SELECT 
-				@errorNumber = ERROR_NUMBER(),
-				@errorSeverity = ERROR_SEVERITY(),
-				@errorState = ERROR_STATE(),
-				@errorLine = ERROR_LINE(),
-				@errorProcedure = ISNULL(ERROR_PROCEDURE(), '-');
-
-				SELECT @errorMessage = 'Error ' + CONVERT(varchar(50), @errorNumber) +
-						  ', Severity ' + CONVERT(varchar(5), @errorSeverity) +
-						  ', State ' + CONVERT(varchar(5), @errorState) + 
-						  ', Procedure ' + ISNULL(@errorProcedure, '-') + 
-						  ', Line ' + CONVERT(varchar(5), @errorLine) + 
-						  ', Message ' + ERROR_MESSAGE();
-
+			EXEC [dbo].[FormatError] @errorMessage = @errorMessageOutput OUTPUT;
 
 			INSERT INTO [dbo].AuditEvents (
 				[EventName],
@@ -56,20 +37,10 @@ AS
 			VALUES (
 				@eventName,
 				'A user was attempted to be added but failed.',
-				@errorMessage,
+				@errorMessageOutput,
 				@executedByUserId);
 
-			RAISERROR 
-			(
-				@errorMessage, 
-				@errorSeverity, 
-				1,               
-				@errorNumber,    
-				@errorSeverity,  
-				@errorState,     
-				@errorProcedure, 
-				@errorLine    
-			);
+			EXEC [dbo].[RaiseError] @errorMessage = @errorMessageOutput;
 		END;
 	END CATCH;
 RETURN 0
