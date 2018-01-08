@@ -26,7 +26,7 @@ namespace TokenApi.IntegrationTests
             };
 
             MockCredentialValidator.Setup(m => m.ValidateAsync(requestModel.Username, requestModel.Password)).ReturnsAsync(true);
-            MockUserRepository.Setup(m => m.GetRegisteredApplicationAsync(requestModel.Username, requestModel.Audience)).ReturnsAsync(new RegisteredApplicationDto {Name = requestModel.Audience});
+            MockUserRepository.Setup(m => m.GetRegisteredApplicationAsync(requestModel.Username, requestModel.Audience)).ReturnsAsync(new RegisteredApplicationDto {RegisteredOwner = "userId"});
             
             // Act
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));

@@ -49,16 +49,17 @@ namespace TokenApi.Security
                 return AuthenticateResult.Fail("Authentication failed.");
             }
 
-            var registeredApplication = await _userRepository.GetRegisteredApplicationAsync(credentials.Username, credentials.Audience);
+            RegisteredApplicationDto registeredApplication = await _userRepository.GetRegisteredApplicationAsync(credentials.Username, credentials.Audience);
             
-            return registeredApplication == null ? AuthenticateResult.Fail("Authentication failed.") : AuthenticateResult.Success(CreateTicket(credentials));
+            return registeredApplication == null ? AuthenticateResult.Fail("Authentication failed.") : 
+                AuthenticateResult.Success(CreateTicket(credentials.Audience, registeredApplication.RegisteredOwner));
         }
 
-        private static AuthenticationTicket CreateTicket(dynamic credentials)
+        private static AuthenticationTicket CreateTicket(string audience, string user)
         {
             var identity = new ClaimsIdentity(SchemeName);
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.UniqueName, credentials.Username));
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, credentials.Audience));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.UniqueName, user));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, audience));
             return new AuthenticationTicket(new ClaimsPrincipal(identity), null, SchemeName);
         }
 
