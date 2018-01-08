@@ -27,6 +27,8 @@ AS
 		BEGIN	
 			ROLLBACK TRANSACTION;
 
+			SET @eventName = 'Application-Add-Failed [' +  CONVERT(NVARCHAR(36), @registerTo) + ']';
+
 			EXEC [dbo].[AuditEvent] 
 				@eventName = @eventName,
 				@eventDescription = 'An application was attempted to be added but failed.',

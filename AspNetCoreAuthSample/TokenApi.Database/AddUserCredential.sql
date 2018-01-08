@@ -4,7 +4,7 @@
 	@executedByUserId UNIQUEIDENTIFIER
 AS
 	DECLARE @eventName NVARCHAR(256);
-	SET @eventName = 'Credentials-Add [' +  CONVERT(NVARCHAR(36), @userId) + ']';
+	SET @eventName = 'Credential-Add [' +  CONVERT(NVARCHAR(36), @userId) + ']';
 
 	BEGIN TRY
 		BEGIN TRANSACTION
@@ -26,6 +26,8 @@ AS
 		IF (XACT_STATE()) <> 0
 		BEGIN	
 			ROLLBACK TRANSACTION;
+
+			SET @eventName = 'Credential-Add-Failed [' +  CONVERT(NVARCHAR(36), @userId) + ']';
 
 			EXEC [dbo].[AuditEvent] 
 				@eventName = @eventName,

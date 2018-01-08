@@ -3,7 +3,7 @@
 	@executedByUserId UNIQUEIDENTIFIER
 AS
 	DECLARE @eventName NVARCHAR(256);
-	SET @eventName = 'Users-Add [' + @username + ']';
+	SET @eventName = 'User-Add [' + @username + ']';
 
 	BEGIN TRY
 		BEGIN TRANSACTION
@@ -20,6 +20,8 @@ AS
 		IF (XACT_STATE()) <> 0
 		BEGIN	
 			ROLLBACK TRANSACTION;
+
+			SET @eventName = 'User-Add-Failed [' + @username + ']';
 
 			EXEC [dbo].[AuditEvent] 
 				@eventName = @eventName,
