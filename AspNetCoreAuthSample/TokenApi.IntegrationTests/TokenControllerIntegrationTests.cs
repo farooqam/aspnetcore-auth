@@ -42,7 +42,7 @@ namespace TokenApi.IntegrationTests
         }
 
         [Fact]
-        public async Task Post_WhenCredentialsNotValid_Returns_BadRequest_Status()
+        public async Task Post_WhenCredentialsNotValid_Returns_Unauthorized_Status()
         {
             // Arrange
             MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
@@ -58,54 +58,8 @@ namespace TokenApi.IntegrationTests
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var content = await response.Content.ReadAsStringAsync();
-            var errorResponseModel = JsonConvert.DeserializeObject<ApiErrors>(content);
-            errorResponseModel.ErrorCount.Should().Be(1);
-            errorResponseModel.Operation.Should().Be("CreateToken");
-
-            var errorModel = errorResponseModel.Errors.Single();
-            errorModel.Message.Should().Be("Could not create token. The username, password, and audience could not be verified.");
-            errorModel.Code.Should().Be(ApiErrors.ErrorList.Single(e => e.Message == errorModel.Message).Code);
-
-            var errorResponseModelData = ((JObject)errorModel.Data).ToObject<PostTokenRequestModel>();
-            errorResponseModelData.Audience.Should().Be(requestModel.Audience);
-            errorResponseModelData.Username.Should().Be(requestModel.Username);
-            errorResponseModelData.Password.Should().Be(requestModel.Password);
-
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
         }
-
-        [Theory]
-        [InlineData("", "password", "audience")]
-        [InlineData(null, "password", "audience")]
-        [InlineData("username", "", "audience")]
-        [InlineData("username", null, "audience")]
-        [InlineData("username", "password", "")]
-        [InlineData("username", "password", null)]
-        [InlineData("", "", "")]
-        [InlineData(null, null, null)]
-
-        public async Task CreateToken_WhenRequestInvalid_Returns_BadRequest_Status(
-            string username, 
-            string password, 
-            string audience)
-        {
-            // Arrange
-            var requestModel = new PostTokenRequestModel
-            {
-                Audience = audience,
-                Password = password,
-                Username = username
-            };
-
-            // Act
-            var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        }
-
     }
 }

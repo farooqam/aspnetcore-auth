@@ -1,11 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TokenApi.Common;
 using TokenApi.Security.Common;
 
 namespace TokenApi.Controllers
 {
+    [Authorize]
     [Consumes("application/json")]
     [Produces("application/json")]
     [Route("api/[controller]")]
@@ -41,14 +44,19 @@ namespace TokenApi.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(PostTokenResponseModel))]
         [ProducesResponseType(400, Type = typeof(ApiErrors))]
-        public async Task<IActionResult> CreateToken([FromBody] PostTokenRequestModel request)
+        public async Task<IActionResult> CreateToken()
         {
-            var createTokenOptions = _mapper.Map<CreateTokenOptions>(request);
+            var createTokenOptions = new CreateTokenOptions
+            {
+                Username = User.FindFirst(JwtRegisteredClaimNames.UniqueName).Value,
+                Audience = User.FindFirst(JwtRegisteredClaimNames.Aud).Value
+            };
+
             var createTokenResult = await _tokenService.CreateTokenAsync(createTokenOptions);
 
             if (createTokenResult == null)
             {
-                return BadRequest(new ApiErrors { Operation = "CreateToken", Errors = new[] { ApiError.CreateTokenAuthFailure.WithData(request)}});
+                return BadRequest(new ApiErrors { Operation = "CreateToken", Errors = new[] { ApiError.CreateTokenAuthFailure.WithData(createTokenOptions)}});
             }
 
             var responseModel = _mapper.Map<PostTokenResponseModel>(createTokenResult);

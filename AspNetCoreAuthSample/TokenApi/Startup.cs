@@ -1,7 +1,5 @@
 ﻿using System.IO;
-using System.Reflection;
 using AutoMapper;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +13,6 @@ using TokenApi.Security;
 using TokenApi.Security.ActiveDirectory;
 using TokenApi.Security.Common;
 using TokenApi.Security.Jwt;
-using TokenApi.Validation;
 
 namespace TokenApi
 {
@@ -49,12 +46,8 @@ namespace TokenApi
                 }).CreateMapper();
             });
 
-            services.AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(ValidationFilter));
-                })
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PostTokenRequestModelValidator>());
-
+            services.AddMvc();
+            
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Info
@@ -66,6 +59,12 @@ namespace TokenApi
 
                 options.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "TokenApi.xml"));
             });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = ApiAuthenticationHandler.SchemeName;
+                options.DefaultChallengeScheme = ApiAuthenticationHandler.SchemeName;
+            }).AddCustomAuth(options => { });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +76,7 @@ namespace TokenApi
             }
 
             app.UseSwagger();
+            app.UseAuthentication();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Token API V1"); });
             app.UseMvc();
         }

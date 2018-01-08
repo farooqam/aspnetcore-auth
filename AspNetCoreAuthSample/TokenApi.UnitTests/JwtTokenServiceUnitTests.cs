@@ -23,19 +23,13 @@ namespace TokenApi.UnitTests
             };
 
             var tokenServiceSettings = new TokenServiceSettings {Issuer = "issuer"};
-
-            var mockCredentialValidator = new Mock<ICredentialValidator>();
+            
             var mockSecretsProvider = new Mock<ISecretsProvider>();
             var mockUserRepository = new Mock<IClaimsProvider>();
             var mockJwtTokenProvider = new Mock<IJwtTokenProvider>();
             var mockSecurityKeyProvider = new Mock<ISecurityKeyProvider>();
-
-            mockCredentialValidator
-                .Setup(m => m.ValidateAsync(createTokenOptions.Username, createTokenOptions.Password))
-                .ReturnsAsync(true);
-
+            
             var service = new JwtTokenService(
-                mockCredentialValidator.Object,
                 mockSecretsProvider.Object,
                 mockUserRepository.Object,
                 mockJwtTokenProvider.Object,
@@ -65,18 +59,12 @@ namespace TokenApi.UnitTests
 
             var tokenServiceSettings = new TokenServiceSettings {Issuer = "issuer"};
 
-            var mockCredentialValidator = new Mock<ICredentialValidator>();
             var mockSecretsProvider = new Mock<ISecretsProvider>();
             var mockUserRepository = new Mock<IClaimsProvider>();
             var mockJwtTokenProvider = new Mock<IJwtTokenProvider>();
             var mockSecurityKeyProvider = new Mock<ISecurityKeyProvider>();
-
-            mockCredentialValidator
-                .Setup(m => m.ValidateAsync(createTokenOptions.Username, createTokenOptions.Password))
-                .ReturnsAsync(false);
-
+            
             var service = new JwtTokenService(
-                mockCredentialValidator.Object,
                 mockSecretsProvider.Object,
                 mockUserRepository.Object,
                 mockJwtTokenProvider.Object,
