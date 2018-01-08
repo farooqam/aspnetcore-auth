@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Reflection;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,10 +10,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenApi.Common;
+using TokenApi.Filters;
 using TokenApi.Security;
 using TokenApi.Security.ActiveDirectory;
 using TokenApi.Security.Common;
 using TokenApi.Security.Jwt;
+using TokenApi.Validation;
 
 namespace TokenApi
 {
@@ -45,7 +49,11 @@ namespace TokenApi
                 }).CreateMapper();
             });
 
-            services.AddMvc();
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add(typeof(ValidationFilter));
+                })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PostTokenRequestModelValidator>());
 
             services.AddSwaggerGen(options =>
             {

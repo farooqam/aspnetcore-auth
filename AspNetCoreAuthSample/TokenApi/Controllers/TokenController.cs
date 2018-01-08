@@ -6,6 +6,7 @@ using TokenApi.Security.Common;
 
 namespace TokenApi.Controllers
 {
+    [Consumes("application/json")]
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class TokenController : Controller
@@ -40,14 +41,14 @@ namespace TokenApi.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(PostTokenResponseModel))]
         [ProducesResponseType(400, Type = typeof(ApiErrors))]
-        public async Task<IActionResult> Post([FromBody] PostTokenRequestModel request)
+        public async Task<IActionResult> CreateToken([FromBody] PostTokenRequestModel request)
         {
             var createTokenOptions = _mapper.Map<CreateTokenOptions>(request);
             var createTokenResult = await _tokenService.CreateTokenAsync(createTokenOptions);
 
             if (createTokenResult == null)
             {
-                return BadRequest(new ApiErrors { Errors = new[] { ApiError.CreateTokenAuthFailure(request)}});
+                return BadRequest(new ApiErrors { Operation = "CreateToken", Errors = new[] { ApiError.CreateTokenAuthFailure.WithData(request)}});
             }
 
             var responseModel = _mapper.Map<PostTokenResponseModel>(createTokenResult);
