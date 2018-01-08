@@ -26,11 +26,11 @@ namespace TokenApi.IntegrationTests
             };
 
             MockCredentialValidator.Setup(m => m.ValidateAsync(requestModel.Username, requestModel.Password)).ReturnsAsync(true);
-            MockUserRepository.Setup(m => m.GetRegisteredApplicationsAsync(requestModel.Username)).ReturnsAsync(new [] {new RegisteredApplicationDto {Name = requestModel.Audience}});
+            MockUserRepository.Setup(m => m.GetRegisteredApplicationAsync(requestModel.Username, requestModel.Audience)).ReturnsAsync(new RegisteredApplicationDto {Name = requestModel.Audience});
             
             // Act
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
-
+        
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -76,7 +76,7 @@ namespace TokenApi.IntegrationTests
             };
 
             MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-            MockUserRepository.Setup(m => m.GetRegisteredApplicationsAsync(requestModel.Username)).ReturnsAsync(new[] { new RegisteredApplicationDto { Name = "foo" } });
+            MockUserRepository.Setup(m => m.GetRegisteredApplicationAsync(requestModel.Username, requestModel.Audience)).ReturnsAsync(null as RegisteredApplicationDto);
 
             // Act
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));

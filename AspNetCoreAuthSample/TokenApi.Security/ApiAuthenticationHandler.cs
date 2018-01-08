@@ -52,10 +52,9 @@ namespace TokenApi.Security
                 return AuthenticateResult.Fail("Authentication failed.");
             }
 
-            IEnumerable<RegisteredApplicationDto> registeredApplications = await _userRepository.GetRegisteredApplicationsAsync(credentials.Username);
-            var audienceValid = registeredApplications.SingleOrDefault(app => string.Compare(app.Name, credentials.Audience, StringComparison.InvariantCultureIgnoreCase) == 0);
-
-            if (audienceValid == null)
+            var registeredApplication = await _userRepository.GetRegisteredApplicationAsync(credentials.Username, credentials.Audience);
+            
+            if (registeredApplication == null)
             {
                 return AuthenticateResult.Fail("Authentication failed.");
             }
@@ -76,14 +75,14 @@ namespace TokenApi.Security
 
         private async Task<dynamic> GetCredentialsFromBody()
         {
-            var initialBody = Context.Request.Body; // Workaround
+            var initialBody = Context.Request.Body;
 
             Context.Request.EnableRewind();
             var buffer = new byte[initialBody.Length];
             await Context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
             var json = Encoding.UTF8.GetString(buffer);
 
-            Context.Request.Body = initialBody; // Workaround
+            Context.Request.Body = initialBody;
 
             var credentialsDef = new {Username = string.Empty, Password = string.Empty, Audience = string.Empty};
             var credentials = JsonConvert.DeserializeAnonymousType(json, credentialsDef);

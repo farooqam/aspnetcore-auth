@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace TokenApi.Dal.Common
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<RegisteredApplicationDto>> GetRegisteredApplicationsAsync(string username);
+        Task<RegisteredApplicationDto> GetRegisteredApplicationAsync(string username, string applicationName);
     }
 }
