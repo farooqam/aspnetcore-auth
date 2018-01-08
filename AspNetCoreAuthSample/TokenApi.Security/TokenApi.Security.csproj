@@ -151,6 +151,10 @@
     <Compile Include="SecurityKeyProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TokenApi.Dal.Common\TokenApi.Dal.Common.csproj">
+      <Project>{4017899B-7550-4F90-B209-B2E21BE21DE3}</Project>
+      <Name>TokenApi.Dal.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TokenApi.Security.Common\TokenApi.Security.Common.csproj">
       <Project>{9AD1C906-2831-49A7-90B6-70280E9376E8}</Project>
       <Name>TokenApi.Security.Common</Name>

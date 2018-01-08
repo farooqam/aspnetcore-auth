@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenApi.Common;
-using TokenApi.Filters;
 using TokenApi.Security;
 using TokenApi.Security.ActiveDirectory;
 using TokenApi.Security.Common;

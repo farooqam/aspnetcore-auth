@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.IntegrationTests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.Validation", "TokenApi.Validation\TokenApi.Validation.csproj", "{6CA589F7-1200-4ACE-A991-72022650F461}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenApi.Dal.Common", "TokenApi.Dal.Common\TokenApi.Dal.Common.csproj", "{4017899B-7550-4F90-B209-B2E21BE21DE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{6CA589F7-1200-4ACE-A991-72022650F461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CA589F7-1200-4ACE-A991-72022650F461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CA589F7-1200-4ACE-A991-72022650F461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4017899B-7550-4F90-B209-B2E21BE21DE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4017899B-7550-4F90-B209-B2E21BE21DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4017899B-7550-4F90-B209-B2E21BE21DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4017899B-7550-4F90-B209-B2E21BE21DE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

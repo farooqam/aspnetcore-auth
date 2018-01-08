@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using TokenApi.Dal.Common;
 using TokenApi.Security.Common;
 
 namespace TokenApi.Security
@@ -16,16 +19,19 @@ namespace TokenApi.Security
     public class ApiAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private readonly ICredentialValidator _credentialValidator;
+        private readonly IUserRepository _userRepository;
         public static readonly string SchemeName = "TokenApi-v1";
 
         public ApiAuthenticationHandler(
             ICredentialValidator credentialValidator,
+            IUserRepository userRepository,
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock) : base(options, logger, encoder, clock)
         {
             _credentialValidator = credentialValidator;
+            _userRepository = userRepository;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -42,6 +48,14 @@ namespace TokenApi.Security
                 credentials.Password);
 
             if (!credentialsValid)
+            {
+                return AuthenticateResult.Fail("Authentication failed.");
+            }
+
+            IEnumerable<RegisteredApplicationDto> registeredApplications = await _userRepository.GetRegisteredApplicationsAsync(credentials.Username);
+            var audienceValid = registeredApplications.SingleOrDefault(app => string.Compare(app.Name, credentials.Audience, StringComparison.InvariantCultureIgnoreCase) == 0);
+
+            if (audienceValid == null)
             {
                 return AuthenticateResult.Fail("Authentication failed.");
             }

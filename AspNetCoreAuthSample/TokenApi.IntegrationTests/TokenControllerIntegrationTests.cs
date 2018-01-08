@@ -7,6 +7,7 @@ using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TokenApi.Common;
+using TokenApi.Dal.Common;
 using Xunit;
 
 namespace TokenApi.IntegrationTests
@@ -17,8 +18,6 @@ namespace TokenApi.IntegrationTests
         public async Task Post_Returns_Ok_Status_And_Token()
         {
             // Arrange
-            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
-
             var requestModel = new PostTokenRequestModel
             {
                 Username = "farooq",
@@ -26,6 +25,9 @@ namespace TokenApi.IntegrationTests
                 Password = "hello!"
             };
 
+            MockCredentialValidator.Setup(m => m.ValidateAsync(requestModel.Username, requestModel.Password)).ReturnsAsync(true);
+            MockUserRepository.Setup(m => m.GetRegisteredApplicationsAsync(requestModel.Username)).ReturnsAsync(new [] {new RegisteredApplicationDto {Name = requestModel.Audience}});
+            
             // Act
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
 
@@ -45,14 +47,36 @@ namespace TokenApi.IntegrationTests
         public async Task Post_WhenCredentialsNotValid_Returns_Unauthorized_Status()
         {
             // Arrange
-            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-
             var requestModel = new PostTokenRequestModel
             {
                 Username = "farooq",
                 Audience = "integration test",
                 Password = "hello!"
             };
+
+            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            
+            // Act
+            var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+        }
+
+        [Fact]
+        public async Task Post_WhenAudienceNotValid_Returns_Unauthorized_Status()
+        {
+            // Arrange
+            var requestModel = new PostTokenRequestModel
+            {
+                Username = "farooq",
+                Audience = "integration test",
+                Password = "hello!"
+            };
+
+            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            MockUserRepository.Setup(m => m.GetRegisteredApplicationsAsync(requestModel.Username)).ReturnsAsync(new[] { new RegisteredApplicationDto { Name = "foo" } });
 
             // Act
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
