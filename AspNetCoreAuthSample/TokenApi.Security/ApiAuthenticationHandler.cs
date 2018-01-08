@@ -30,17 +30,7 @@ namespace TokenApi.Security
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var initialBody = Context.Request.Body; // Workaround
-
-            Context.Request.EnableRewind();
-            var buffer = new byte[initialBody.Length];
-            await Context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
-            var json = Encoding.UTF8.GetString(buffer);
-
-            Context.Request.Body = initialBody; // Workaround
-
-            var credentialsDef = new { Username = string.Empty, Password = string.Empty, Audience = string.Empty};
-            var credentials = JsonConvert.DeserializeAnonymousType(json, credentialsDef);
+            var credentials = await GetCredentialsFromBody();
 
             if (credentials == null)
             {
@@ -56,14 +46,34 @@ namespace TokenApi.Security
                 return AuthenticateResult.Fail("Authentication failed.");
             }
 
-            var identity = new ClaimsIdentity(SchemeName);
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.UniqueName, credentials.Username));
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, credentials.Audience));
-
-
+            var identity = CreateIdentity(credentials);
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), null, SchemeName);
 
             return AuthenticateResult.Success(ticket);
+        }
+
+        private static ClaimsIdentity CreateIdentity(dynamic credentials)
+        {
+            var identity = new ClaimsIdentity(SchemeName);
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.UniqueName, credentials.Username));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, credentials.Audience));
+            return identity;
+        }
+
+        private async Task<dynamic> GetCredentialsFromBody()
+        {
+            var initialBody = Context.Request.Body; // Workaround
+
+            Context.Request.EnableRewind();
+            var buffer = new byte[initialBody.Length];
+            await Context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
+            var json = Encoding.UTF8.GetString(buffer);
+
+            Context.Request.Body = initialBody; // Workaround
+
+            var credentialsDef = new {Username = string.Empty, Password = string.Empty, Audience = string.Empty};
+            var credentials = JsonConvert.DeserializeAnonymousType(json, credentialsDef);
+            return credentials;
         }
     }
 }
