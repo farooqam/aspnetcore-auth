@@ -9,18 +9,15 @@ namespace TokenApi.Validation
         {
             RuleFor(m => m.Username)
                 .NotEmpty()
-                .WithErrorCode(ApiError.MissingUsername.Code.ToString())
-                .WithMessage(ApiError.MissingUsername.Message);
+                .WithMessageFormat(ApiError.MissingUsername);
 
             RuleFor(m => m.Password)
                 .NotEmpty()
-                .WithErrorCode(ApiError.MissingPassword.Code.ToString())
-                .WithMessage(ApiError.MissingPassword.Message);
+                .WithMessageFormat(ApiError.MissingPassword);
 
             RuleFor(m => m.Audience)
                 .NotEmpty()
-                .WithErrorCode(ApiError.MissingAudience.Code.ToString())
-                .WithMessage(ApiError.MissingAudience.Message);
+                .WithMessageFormat(ApiError.MissingAudience);
         }
     }
 }
