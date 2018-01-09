@@ -72,6 +72,7 @@
     <Build Include="Tables\Secrets.sql" />
     <Build Include="Tables\UserCredentials.sql" />
     <Build Include="Tables\Users.sql" />
+    <Build Include="Stored Procedures\VerifyPassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\AuditEvents.sql" />

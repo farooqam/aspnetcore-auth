@@ -29,10 +29,17 @@ AS
 
 			SET @eventName = 'Secret-Add-Failed [' +  CONVERT(NVARCHAR(36), @executedByUserId) + ']';
 
+			DECLARE @errorMessageOutput NVARCHAR(256);
+
+			EXEC [dbo].[FormatError] @errorMessage = @errorMessageOutput OUTPUT;
+
 			EXEC [dbo].[AuditEvent] 
 				@eventName = @eventName,
 				@eventDescription = 'An secret was attempted to be added but failed.',
+				@eventData = @errorMessageOutput,
 				@executedByUserId = @executedByUserId;
+
+			EXEC [dbo].[RaiseError] @errorMessage = @errorMessageOutput;
 			
 		END;
 	END CATCH;

@@ -1,12 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[AuditEvent]
 	@eventName NVARCHAR(256),
 	@eventDescription NVARCHAR(256),
+	@eventData NVARCHAR(MAX) = null,
 	@executedByUserId UNIQUEIDENTIFIER
 AS
-	DECLARE @errorMessageOutput NVARCHAR(4000);
-
-			EXEC [dbo].[FormatError] @errorMessage = @errorMessageOutput OUTPUT;
-
 			INSERT INTO [dbo].AuditEvents (
 				[EventName],
 				[EventDescription],
@@ -15,8 +12,6 @@ AS
 			VALUES (
 				@eventName,
 				@eventDescription,
-				@errorMessageOutput,
+				@eventData,
 				@executedByUserId);
-
-			EXEC [dbo].[RaiseError] @errorMessage = @errorMessageOutput;
 RETURN 0
