@@ -57,21 +57,23 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Stored Procedures" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Users.sql" />
-    <Build Include="UserCredentials.sql" />
-    <Build Include="RegisteredApplications.sql" />
-    <Build Include="Secrets.sql" />
-    <Build Include="AuditEvents.sql" />
-    <Build Include="AddUser.sql" />
-    <Build Include="FormatError.sql" />
-    <Build Include="RaiseError.sql" />
-    <Build Include="AuditEvent.sql" />
-    <Build Include="AddUserCredential.sql" />
-    <Build Include="AddApplication.sql" />
-    <Build Include="AddSecret.sql" />
+    <Build Include="Stored Procedures\AddApplication.sql" />
+    <Build Include="Stored Procedures\AddSecret.sql" />
+    <Build Include="Stored Procedures\AddUser.sql" />
+    <Build Include="Stored Procedures\AddUserCredential.sql" />
+    <Build Include="Stored Procedures\AuditEvent.sql" />
+    <Build Include="Stored Procedures\FormatError.sql" />
+    <Build Include="Stored Procedures\RaiseError.sql" />
+    <Build Include="Tables\RegisteredApplications.sql" />
+    <Build Include="Tables\Secrets.sql" />
+    <Build Include="Tables\UserCredentials.sql" />
+    <Build Include="Tables\Users.sql" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="Tables\AuditEvents.sql" />
   </ItemGroup>
 </Project>
