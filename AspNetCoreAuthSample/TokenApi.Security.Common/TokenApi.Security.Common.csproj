@@ -56,6 +56,7 @@
     <Compile Include="CreateTokenResult.cs" />
     <Compile Include="IClaimsProvider.cs" />
     <Compile Include="ICredentialValidator.cs" />
+    <Compile Include="IHashingProvider.cs" />
     <Compile Include="ISecurityKeyProvider.cs" />
     <Compile Include="ITokenService.cs" />
     <Compile Include="ISecretsProvider.cs" />
