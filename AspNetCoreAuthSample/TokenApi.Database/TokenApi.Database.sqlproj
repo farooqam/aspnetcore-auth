@@ -70,6 +70,7 @@
     <Build Include="AuditEvent.sql" />
     <Build Include="AddUserCredential.sql" />
     <Build Include="AddApplication.sql" />
+    <Build Include="AddSecret.sql" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
