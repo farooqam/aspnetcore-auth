@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TokenApi.Common;
 using TokenApi.Dal.Common;
+using TokenApi.Security.Common;
 using Xunit;
 
 namespace TokenApi.IntegrationTests
@@ -24,10 +25,12 @@ namespace TokenApi.IntegrationTests
                 Audience = "integration test",
                 Password = "hello!"
             };
-
-            MockCredentialValidator.Setup(m => m.ValidateAsync(requestModel.Username, requestModel.Password)).ReturnsAsync(true);
-            MockUserRepository.Setup(m => m.GetRegisteredApplicationAsync(requestModel.Username, requestModel.Audience)).ReturnsAsync(new RegisteredApplicationDto {RegisteredOwner = "userId"});
             
+            var mockUserDto = new UserDto {Id = Guid.NewGuid()};
+            MockUserRepository.Setup(m => m.GetUserAsync(requestModel.Username, WellKnownUserIds.TokenApi)).ReturnsAsync(mockUserDto);
+            MockUserRepository.Setup(m => m.GetRegisteredApplicationAsync(requestModel.Username, requestModel.Audience)).ReturnsAsync(new RegisteredApplicationDto {RegisteredOwner = "userId"});
+            MockCredentialValidator.Setup(m => m.ValidateAsync(mockUserDto.Id, requestModel.Password, It.IsAny<Guid>())).ReturnsAsync(true);
+
             // Act
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
         
@@ -54,7 +57,9 @@ namespace TokenApi.IntegrationTests
                 Password = "hello!"
             };
 
-            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            var mockUserDto = new UserDto { Id = Guid.NewGuid() };
+            MockUserRepository.Setup(m => m.GetUserAsync(requestModel.Username, WellKnownUserIds.TokenApi)).ReturnsAsync(mockUserDto);
+            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<Guid>())).ReturnsAsync(false);
             
             // Act
             var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
@@ -75,7 +80,9 @@ namespace TokenApi.IntegrationTests
                 Password = "hello!"
             };
 
-            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            var mockUserDto = new UserDto { Id = Guid.NewGuid() };
+            MockUserRepository.Setup(m => m.GetUserAsync(requestModel.Username, WellKnownUserIds.TokenApi)).ReturnsAsync(mockUserDto);
+            MockCredentialValidator.Setup(m => m.ValidateAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<Guid>())).ReturnsAsync(true);
             MockUserRepository.Setup(m => m.GetRegisteredApplicationAsync(requestModel.Username, requestModel.Audience)).ReturnsAsync(null as RegisteredApplicationDto);
 
             // Act
@@ -84,6 +91,26 @@ namespace TokenApi.IntegrationTests
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
+        }
+
+        [Fact]
+        public async Task Post_WhenUserNotValid_Returns_Unauthorized_Status()
+        {
+            // Arrange
+            var requestModel = new PostTokenRequestModel
+            {
+                Username = "farooq",
+                Audience = "integration test",
+                Password = "hello!"
+            };
+
+            MockUserRepository.Setup(m => m.GetUserAsync(requestModel.Username, WellKnownUserIds.TokenApi)).ReturnsAsync(null as UserDto);
+
+            // Act
+            var response = await HttpClient.PostAsync("api/token", Stringify(requestModel));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
     }
 }

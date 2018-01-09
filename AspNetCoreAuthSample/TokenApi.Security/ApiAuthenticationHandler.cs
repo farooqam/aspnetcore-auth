@@ -40,9 +40,17 @@ namespace TokenApi.Security
                 return AuthenticateResult.Fail("Authentication failed.");
             }
 
+            UserDto user = await _userRepository.GetUserAsync(credentials.Username, WellKnownUserIds.TokenApi);
+
+            if (user == null)
+            {
+                return AuthenticateResult.Fail("Authentication failed.");
+            }
+
             var credentialsValid = await _credentialValidator.ValidateAsync(
-                credentials.Username, 
-                credentials.Password);
+                user.Id, 
+                credentials.Password,
+                WellKnownUserIds.TokenApi);
 
             if (!credentialsValid)
             {

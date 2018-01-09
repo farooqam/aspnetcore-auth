@@ -1,9 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TokenApi.Security.Common
 {
     public interface ICredentialValidator
     {
-        Task<bool> ValidateAsync(string username, string password);
+        Task<bool> ValidateAsync(
+            Guid userId, 
+            string password,
+            Guid executedByUserId);
     }
 }

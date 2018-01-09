@@ -68,13 +68,13 @@
     <Build Include="Stored Procedures\AuditEvent.sql" />
     <Build Include="Stored Procedures\FormatError.sql" />
     <Build Include="Stored Procedures\RaiseError.sql" />
+    <Build Include="Stored Procedures\VerifyPassword.sql" />
+    <Build Include="Stored Procedures\GetUser.sql" />
+    <Build Include="Tables\AuditEvents.sql" />
     <Build Include="Tables\RegisteredApplications.sql" />
     <Build Include="Tables\Secrets.sql" />
     <Build Include="Tables\UserCredentials.sql" />
     <Build Include="Tables\Users.sql" />
-    <Build Include="Stored Procedures\VerifyPassword.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Tables\AuditEvents.sql" />
+    <Build Include="Stored Procedures\DeactivateUser.sql" />
   </ItemGroup>
 </Project>

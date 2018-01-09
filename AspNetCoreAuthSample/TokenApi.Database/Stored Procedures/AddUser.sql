@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[AddUser]
-	@username NVARCHAR(20),
+	@username NVARCHAR(256),
 	@executedByUserId UNIQUEIDENTIFIER
 AS
 	DECLARE @eventName NVARCHAR(256);
